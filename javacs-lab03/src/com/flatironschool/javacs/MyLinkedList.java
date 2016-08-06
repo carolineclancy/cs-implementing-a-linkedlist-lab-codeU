@@ -85,29 +85,25 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		// TODO: fill this in
-
-		if (index < 0 || index > size()){
-			throw new IndexOutOfBoundsException();
-		}
-
-
-
-		if (index == 0){
-			//Node temp = head.next;
+		// TODO: fill this 	in
+		if (index > -1 && index < size){
+		if (index == 0) {
+			// insert at the front
 			head = new Node(element);
-			//head.next = n;
-			//n.next = temp;
-			
 		} else {
-			Node n = getNode(index - 1);
-			if (n != null ){
-				Node temp = n.next;
-				n.next = new Node(element);
-				n.next.next = temp;
-			}
+			// insert in middle/end; walk to node before the one to insert
+			Node current = getNode(index - 1);
 
+			Node newNode = new Node(element, current.next);
+			current.next = newNode;
+			
+			// shorter version of the above code
+			// current.next = new ListNode(value, current.next);
 		}
+		}
+
+
+		
 
 		size++;
 	}
@@ -161,11 +157,21 @@ public class MyLinkedList<E> implements List<E> {
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException();
 		}
-		Node node = head;
-		for (int i=0; i<index; i++) {
-			node = node.next;
+		Node current = head;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
 		}
-		return node;
+		return current;
+
+
+		Iterator<E> itr = iterator();
+		for (int i = 0; itr.hasNext() && i < toArray().length; i++){
+			if (i == index){
+				return toArray()[i];
+			}
+		}
+		return -1;
+		//return node;
 	}
 
 	@Override
